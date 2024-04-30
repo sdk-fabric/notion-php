@@ -1,0 +1,9 @@
+{
+  "type": "client-php",
+  "require": {
+    "sdkfabric/notion": {
+      "target": "./src",
+      "namespace": "SdkFabric\Notion"
+    }
+  }
+}
