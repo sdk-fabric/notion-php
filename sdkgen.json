@@ -3,7 +3,7 @@
   "require": {
     "sdkfabric/notion": {
       "target": "./src",
-      "namespace": "SdkFabric\Notion"
+      "namespace": "SdkFabric\\Notion"
     }
   }
 }
