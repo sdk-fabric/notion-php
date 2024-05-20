@@ -16,17 +16,25 @@ use Sdkgen\Client\TokenStoreInterface;
 
 class Client extends ClientAbstract
 {
-    public function users(): UsersTag
+    public function user(): UserTag
     {
-        return new UsersTag(
+        return new UserTag(
             $this->httpClient,
             $this->parser
         );
     }
 
-    public function databases(): DatabasesTag
+    public function database(): DatabaseTag
     {
-        return new DatabasesTag(
+        return new DatabaseTag(
+            $this->httpClient,
+            $this->parser
+        );
+    }
+
+    public function page(): PageTag
+    {
+        return new PageTag(
             $this->httpClient,
             $this->parser
         );
