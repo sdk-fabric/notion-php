@@ -49,5 +49,41 @@ class PageTag extends TagAbstract
         }
     }
 
+    /**
+     * @param Page $payload
+     * @return Page
+     * @throws ClientException
+     */
+    public function create(Page $payload): Page
+    {
+        $url = $this->parser->url('/v1/pages', [
+        ]);
+
+        $options = [
+            'query' => $this->parser->query([
+            ], [
+            ]),
+            'json' => $payload
+        ];
+
+        try {
+            $response = $this->httpClient->request('POST', $url, $options);
+            $data = (string) $response->getBody();
+
+            return $this->parser->parse($data, Page::class);
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $data = (string) $e->getResponse()->getBody();
+
+            switch ($e->getResponse()->getStatusCode()) {
+                default:
+                    throw new UnknownStatusCodeException('The server returned an unknown status code');
+            }
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
 
 }

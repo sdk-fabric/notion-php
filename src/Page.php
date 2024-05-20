@@ -33,7 +33,7 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Description('')]
     protected ?string $icon = null;
     #[Description('')]
-    protected ?string $parent = null;
+    protected DatabaseId|PageId|null $parent = null;
     #[Key('in_trash')]
     #[Description('')]
     protected ?bool $inTrash = null;
@@ -42,6 +42,11 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
      */
     #[Description('')]
     protected ?\PSX\Record\Record $properties = null;
+    #[Description('')]
+    protected ?string $url = null;
+    #[Key('public_url')]
+    #[Description('')]
+    protected ?string $publicUrl = null;
     public function setObject(?string $object) : void
     {
         $this->object = $object;
@@ -106,11 +111,11 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->icon;
     }
-    public function setParent(?string $parent) : void
+    public function setParent(DatabaseId|PageId|null $parent) : void
     {
         $this->parent = $parent;
     }
-    public function getParent() : ?string
+    public function getParent() : DatabaseId|PageId|null
     {
         return $this->parent;
     }
@@ -130,6 +135,22 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->properties;
     }
+    public function setUrl(?string $url) : void
+    {
+        $this->url = $url;
+    }
+    public function getUrl() : ?string
+    {
+        return $this->url;
+    }
+    public function setPublicUrl(?string $publicUrl) : void
+    {
+        $this->publicUrl = $publicUrl;
+    }
+    public function getPublicUrl() : ?string
+    {
+        return $this->publicUrl;
+    }
     public function toRecord() : \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
@@ -145,6 +166,8 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('parent', $this->parent);
         $record->put('in_trash', $this->inTrash);
         $record->put('properties', $this->properties);
+        $record->put('url', $this->url);
+        $record->put('public_url', $this->publicUrl);
         return $record;
     }
     public function jsonSerialize() : object
