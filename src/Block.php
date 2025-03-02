@@ -6,38 +6,44 @@
 
 namespace SdkFabric\Notion;
 
+use PSX\Schema\Attribute\DerivedType;
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Discriminator;
 use PSX\Schema\Attribute\Key;
 
 #[Description('')]
-class Block implements \JsonSerializable, \PSX\Record\RecordableInterface
+#[Discriminator('type')]
+#[DerivedType(BlockBookmark::class, 'bookmark')]
+abstract class Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Description('')]
     protected ?string $object = null;
     #[Description('')]
     protected ?string $id = null;
     #[Description('')]
-    protected ?Page $parent = null;
+    protected ?ParentId $parent = null;
+    #[Description('')]
+    protected ?string $type = null;
     #[Key('created_time')]
     #[Description('')]
     protected ?\PSX\DateTime\LocalDateTime $createdTime = null;
-    #[Key('last_edited_time')]
-    #[Description('')]
-    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
     #[Key('created_by')]
     #[Description('')]
     protected ?User $createdBy = null;
+    #[Key('last_edited_time')]
+    #[Description('')]
+    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
     #[Key('last_edited_by')]
     #[Description('')]
     protected ?User $lastEditedBy = null;
-    #[Key('has_children')]
-    #[Description('')]
-    protected ?bool $hasChildren = null;
+    #[Description('The archived status of the block')]
+    protected ?bool $archived = null;
     #[Key('in_trash')]
-    #[Description('')]
+    #[Description('Whether the block has been deleted')]
     protected ?bool $inTrash = null;
-    #[Description('')]
-    protected ?string $type = null;
+    #[Key('has_children')]
+    #[Description('Whether or not the block has children blocks nested within it')]
+    protected ?bool $hasChildren = null;
     public function setObject(?string $object): void
     {
         $this->object = $object;
@@ -54,61 +60,13 @@ class Block implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->id;
     }
-    public function setParent(?Page $parent): void
+    public function setParent(?ParentId $parent): void
     {
         $this->parent = $parent;
     }
-    public function getParent(): ?Page
+    public function getParent(): ?ParentId
     {
         return $this->parent;
-    }
-    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
-    {
-        $this->createdTime = $createdTime;
-    }
-    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
-    {
-        return $this->createdTime;
-    }
-    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
-    {
-        $this->lastEditedTime = $lastEditedTime;
-    }
-    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
-    {
-        return $this->lastEditedTime;
-    }
-    public function setCreatedBy(?User $createdBy): void
-    {
-        $this->createdBy = $createdBy;
-    }
-    public function getCreatedBy(): ?User
-    {
-        return $this->createdBy;
-    }
-    public function setLastEditedBy(?User $lastEditedBy): void
-    {
-        $this->lastEditedBy = $lastEditedBy;
-    }
-    public function getLastEditedBy(): ?User
-    {
-        return $this->lastEditedBy;
-    }
-    public function setHasChildren(?bool $hasChildren): void
-    {
-        $this->hasChildren = $hasChildren;
-    }
-    public function getHasChildren(): ?bool
-    {
-        return $this->hasChildren;
-    }
-    public function setInTrash(?bool $inTrash): void
-    {
-        $this->inTrash = $inTrash;
-    }
-    public function getInTrash(): ?bool
-    {
-        return $this->inTrash;
     }
     public function setType(?string $type): void
     {
@@ -118,6 +76,62 @@ class Block implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->type;
     }
+    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
+    {
+        $this->createdTime = $createdTime;
+    }
+    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
+    {
+        return $this->createdTime;
+    }
+    public function setCreatedBy(?User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
+    {
+        $this->lastEditedTime = $lastEditedTime;
+    }
+    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
+    {
+        return $this->lastEditedTime;
+    }
+    public function setLastEditedBy(?User $lastEditedBy): void
+    {
+        $this->lastEditedBy = $lastEditedBy;
+    }
+    public function getLastEditedBy(): ?User
+    {
+        return $this->lastEditedBy;
+    }
+    public function setArchived(?bool $archived): void
+    {
+        $this->archived = $archived;
+    }
+    public function getArchived(): ?bool
+    {
+        return $this->archived;
+    }
+    public function setInTrash(?bool $inTrash): void
+    {
+        $this->inTrash = $inTrash;
+    }
+    public function getInTrash(): ?bool
+    {
+        return $this->inTrash;
+    }
+    public function setHasChildren(?bool $hasChildren): void
+    {
+        $this->hasChildren = $hasChildren;
+    }
+    public function getHasChildren(): ?bool
+    {
+        return $this->hasChildren;
+    }
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
@@ -125,13 +139,14 @@ class Block implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('object', $this->object);
         $record->put('id', $this->id);
         $record->put('parent', $this->parent);
-        $record->put('created_time', $this->createdTime);
-        $record->put('last_edited_time', $this->lastEditedTime);
-        $record->put('created_by', $this->createdBy);
-        $record->put('last_edited_by', $this->lastEditedBy);
-        $record->put('has_children', $this->hasChildren);
-        $record->put('in_trash', $this->inTrash);
         $record->put('type', $this->type);
+        $record->put('created_time', $this->createdTime);
+        $record->put('created_by', $this->createdBy);
+        $record->put('last_edited_time', $this->lastEditedTime);
+        $record->put('last_edited_by', $this->lastEditedBy);
+        $record->put('archived', $this->archived);
+        $record->put('in_trash', $this->inTrash);
+        $record->put('has_children', $this->hasChildren);
         return $record;
     }
     public function jsonSerialize(): object

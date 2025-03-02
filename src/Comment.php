@@ -13,18 +13,18 @@ use PSX\Schema\Attribute\Key;
 class Comment implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Description('')]
-    protected ?PageId $parent = null;
+    protected ?ParentId $parent = null;
     #[Key('discussion_id')]
     #[Description('')]
     protected ?string $discussionId = null;
     #[Key('rich_text')]
     #[Description('')]
     protected ?RichText $richText = null;
-    public function setParent(?PageId $parent): void
+    public function setParent(?ParentId $parent): void
     {
         $this->parent = $parent;
     }
-    public function getParent(): ?PageId
+    public function getParent(): ?ParentId
     {
         return $this->parent;
     }
