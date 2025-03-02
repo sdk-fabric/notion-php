@@ -29,11 +29,9 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Description('')]
     protected ?User $lastEditedBy = null;
     #[Description('')]
-    protected ?string $cover = null;
+    protected ?FileObject $cover = null;
     #[Description('')]
-    protected ?string $icon = null;
-    #[Description('')]
-    protected mixed $parent = null;
+    protected ?Icon $icon = null;
     #[Key('in_trash')]
     #[Description('')]
     protected ?bool $inTrash = null;
@@ -42,6 +40,8 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
      */
     #[Description('')]
     protected ?\PSX\Record\Record $properties = null;
+    #[Description('')]
+    protected ?ParentId $parent = null;
     #[Description('')]
     protected ?string $url = null;
     #[Key('public_url')]
@@ -95,29 +95,21 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->lastEditedBy;
     }
-    public function setCover(?string $cover): void
+    public function setCover(?FileObject $cover): void
     {
         $this->cover = $cover;
     }
-    public function getCover(): ?string
+    public function getCover(): ?FileObject
     {
         return $this->cover;
     }
-    public function setIcon(?string $icon): void
+    public function setIcon(?Icon $icon): void
     {
         $this->icon = $icon;
     }
-    public function getIcon(): ?string
+    public function getIcon(): ?Icon
     {
         return $this->icon;
-    }
-    public function setParent(mixed $parent): void
-    {
-        $this->parent = $parent;
-    }
-    public function getParent(): mixed
-    {
-        return $this->parent;
     }
     public function setInTrash(?bool $inTrash): void
     {
@@ -140,6 +132,14 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     public function getProperties(): ?\PSX\Record\Record
     {
         return $this->properties;
+    }
+    public function setParent(?ParentId $parent): void
+    {
+        $this->parent = $parent;
+    }
+    public function getParent(): ?ParentId
+    {
+        return $this->parent;
     }
     public function setUrl(?string $url): void
     {
@@ -169,9 +169,9 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('last_edited_by', $this->lastEditedBy);
         $record->put('cover', $this->cover);
         $record->put('icon', $this->icon);
-        $record->put('parent', $this->parent);
         $record->put('in_trash', $this->inTrash);
         $record->put('properties', $this->properties);
+        $record->put('parent', $this->parent);
         $record->put('url', $this->url);
         $record->put('public_url', $this->publicUrl);
         return $record;
