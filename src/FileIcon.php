@@ -12,12 +12,12 @@ use PSX\Schema\Attribute\Description;
 class FileIcon extends Icon implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Description('')]
-    protected ?File $file = null;
-    public function setFile(?File $file): void
+    protected ?FileObject $file = null;
+    public function setFile(?FileObject $file): void
     {
         $this->file = $file;
     }
-    public function getFile(): ?File
+    public function getFile(): ?FileObject
     {
         return $this->file;
     }
