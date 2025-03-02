@@ -6,11 +6,16 @@
 
 namespace SdkFabric\Notion;
 
+use PSX\Schema\Attribute\DerivedType;
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Discriminator;
 use PSX\Schema\Attribute\Key;
 
 #[Description('')]
-class RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
+#[Discriminator('type')]
+#[DerivedType(RichTextEquation::class, 'equation')]
+#[DerivedType(RichTextText::class, 'text')]
+abstract class RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Description('')]
     protected ?string $type = null;
