@@ -20,6 +20,7 @@ class UserTag extends TagAbstract
      * @param string|null $startCursor
      * @param int|null $pageSize
      * @return UserCollection
+     * @throws ErrorException
      * @throws ClientException
      */
     public function getAll(?string $startCursor = null, ?int $pageSize = null): UserCollection
@@ -41,7 +42,7 @@ class UserTag extends TagAbstract
             $response = $this->httpClient->request('GET', $url, $options);
             $body = $response->getBody();
 
-            $data = $this->parser->parse((string) $body, UserCollection::class);
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(UserCollection::class));
 
             return $data;
         } catch (ClientException $e) {
@@ -49,6 +50,12 @@ class UserTag extends TagAbstract
         } catch (BadResponseException $e) {
             $body = $e->getResponse()->getBody();
             $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
 
             throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
         } catch (\Throwable $e) {
@@ -61,6 +68,7 @@ class UserTag extends TagAbstract
      *
      * @param string $userId
      * @return User
+     * @throws ErrorException
      * @throws ClientException
      */
     public function get(string $userId): User
@@ -81,7 +89,7 @@ class UserTag extends TagAbstract
             $response = $this->httpClient->request('GET', $url, $options);
             $body = $response->getBody();
 
-            $data = $this->parser->parse((string) $body, User::class);
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(User::class));
 
             return $data;
         } catch (ClientException $e) {
@@ -89,6 +97,12 @@ class UserTag extends TagAbstract
         } catch (BadResponseException $e) {
             $body = $e->getResponse()->getBody();
             $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
 
             throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
         } catch (\Throwable $e) {

@@ -23,55 +23,55 @@ class DatabaseAnnotations implements \JsonSerializable, \PSX\Record\RecordableIn
     protected ?bool $code = null;
     #[Description('')]
     protected ?string $color = null;
-    public function setBold(?bool $bold) : void
+    public function setBold(?bool $bold): void
     {
         $this->bold = $bold;
     }
-    public function getBold() : ?bool
+    public function getBold(): ?bool
     {
         return $this->bold;
     }
-    public function setItalic(?bool $italic) : void
+    public function setItalic(?bool $italic): void
     {
         $this->italic = $italic;
     }
-    public function getItalic() : ?bool
+    public function getItalic(): ?bool
     {
         return $this->italic;
     }
-    public function setStrikethrough(?bool $strikethrough) : void
+    public function setStrikethrough(?bool $strikethrough): void
     {
         $this->strikethrough = $strikethrough;
     }
-    public function getStrikethrough() : ?bool
+    public function getStrikethrough(): ?bool
     {
         return $this->strikethrough;
     }
-    public function setUnderline(?bool $underline) : void
+    public function setUnderline(?bool $underline): void
     {
         $this->underline = $underline;
     }
-    public function getUnderline() : ?bool
+    public function getUnderline(): ?bool
     {
         return $this->underline;
     }
-    public function setCode(?bool $code) : void
+    public function setCode(?bool $code): void
     {
         $this->code = $code;
     }
-    public function getCode() : ?bool
+    public function getCode(): ?bool
     {
         return $this->code;
     }
-    public function setColor(?string $color) : void
+    public function setColor(?string $color): void
     {
         $this->color = $color;
     }
-    public function getColor() : ?string
+    public function getColor(): ?string
     {
         return $this->color;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -83,7 +83,7 @@ class DatabaseAnnotations implements \JsonSerializable, \PSX\Record\RecordableIn
         $record->put('color', $this->color);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

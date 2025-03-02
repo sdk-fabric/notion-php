@@ -21,39 +21,39 @@ class RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
     protected ?string $plainText = null;
     #[Description('')]
     protected ?string $href = null;
-    public function setType(?string $type) : void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
-    public function setAnnotations(?RichTextAnnotation $annotations) : void
+    public function setAnnotations(?RichTextAnnotation $annotations): void
     {
         $this->annotations = $annotations;
     }
-    public function getAnnotations() : ?RichTextAnnotation
+    public function getAnnotations(): ?RichTextAnnotation
     {
         return $this->annotations;
     }
-    public function setPlainText(?string $plainText) : void
+    public function setPlainText(?string $plainText): void
     {
         $this->plainText = $plainText;
     }
-    public function getPlainText() : ?string
+    public function getPlainText(): ?string
     {
         return $this->plainText;
     }
-    public function setHref(?string $href) : void
+    public function setHref(?string $href): void
     {
         $this->href = $href;
     }
-    public function getHref() : ?string
+    public function getHref(): ?string
     {
         return $this->href;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -63,7 +63,7 @@ class RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('href', $this->href);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

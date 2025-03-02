@@ -20,31 +20,31 @@ class Comment implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Key('rich_text')]
     #[Description('')]
     protected ?RichText $richText = null;
-    public function setParent(?PageId $parent) : void
+    public function setParent(?PageId $parent): void
     {
         $this->parent = $parent;
     }
-    public function getParent() : ?PageId
+    public function getParent(): ?PageId
     {
         return $this->parent;
     }
-    public function setDiscussionId(?string $discussionId) : void
+    public function setDiscussionId(?string $discussionId): void
     {
         $this->discussionId = $discussionId;
     }
-    public function getDiscussionId() : ?string
+    public function getDiscussionId(): ?string
     {
         return $this->discussionId;
     }
-    public function setRichText(?RichText $richText) : void
+    public function setRichText(?RichText $richText): void
     {
         $this->richText = $richText;
     }
-    public function getRichText() : ?RichText
+    public function getRichText(): ?RichText
     {
         return $this->richText;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -53,7 +53,7 @@ class Comment implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('rich_text', $this->richText);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

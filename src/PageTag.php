@@ -19,6 +19,7 @@ class PageTag extends TagAbstract
      *
      * @param string $pageId
      * @return Page
+     * @throws ErrorException
      * @throws ClientException
      */
     public function get(string $pageId): Page
@@ -39,7 +40,7 @@ class PageTag extends TagAbstract
             $response = $this->httpClient->request('GET', $url, $options);
             $body = $response->getBody();
 
-            $data = $this->parser->parse((string) $body, Page::class);
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Page::class));
 
             return $data;
         } catch (ClientException $e) {
@@ -47,6 +48,12 @@ class PageTag extends TagAbstract
         } catch (BadResponseException $e) {
             $body = $e->getResponse()->getBody();
             $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
 
             throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
         } catch (\Throwable $e) {
@@ -59,6 +66,7 @@ class PageTag extends TagAbstract
      *
      * @param Page $payload
      * @return Page
+     * @throws ErrorException
      * @throws ClientException
      */
     public function create(Page $payload): Page
@@ -80,7 +88,7 @@ class PageTag extends TagAbstract
             $response = $this->httpClient->request('POST', $url, $options);
             $body = $response->getBody();
 
-            $data = $this->parser->parse((string) $body, Page::class);
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Page::class));
 
             return $data;
         } catch (ClientException $e) {
@@ -88,6 +96,12 @@ class PageTag extends TagAbstract
         } catch (BadResponseException $e) {
             $body = $e->getResponse()->getBody();
             $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
 
             throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
         } catch (\Throwable $e) {

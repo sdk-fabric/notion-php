@@ -25,55 +25,55 @@ class User implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Key('avatar_url')]
     #[Description('')]
     protected ?string $avatarUrl = null;
-    public function setObject(?string $object) : void
+    public function setObject(?string $object): void
     {
         $this->object = $object;
     }
-    public function getObject() : ?string
+    public function getObject(): ?string
     {
         return $this->object;
     }
-    public function setId(?string $id) : void
+    public function setId(?string $id): void
     {
         $this->id = $id;
     }
-    public function getId() : ?string
+    public function getId(): ?string
     {
         return $this->id;
     }
-    public function setType(?string $type) : void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
-    public function setPerson(?Person $person) : void
+    public function setPerson(?Person $person): void
     {
         $this->person = $person;
     }
-    public function getPerson() : ?Person
+    public function getPerson(): ?Person
     {
         return $this->person;
     }
-    public function setName(?string $name) : void
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
-    public function getName() : ?string
+    public function getName(): ?string
     {
         return $this->name;
     }
-    public function setAvatarUrl(?string $avatarUrl) : void
+    public function setAvatarUrl(?string $avatarUrl): void
     {
         $this->avatarUrl = $avatarUrl;
     }
-    public function getAvatarUrl() : ?string
+    public function getAvatarUrl(): ?string
     {
         return $this->avatarUrl;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -85,7 +85,7 @@ class User implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('avatar_url', $this->avatarUrl);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

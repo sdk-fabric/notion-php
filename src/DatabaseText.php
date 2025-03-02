@@ -15,23 +15,23 @@ class DatabaseText implements \JsonSerializable, \PSX\Record\RecordableInterface
     protected ?string $content = null;
     #[Description('')]
     protected ?string $link = null;
-    public function setContent(?string $content) : void
+    public function setContent(?string $content): void
     {
         $this->content = $content;
     }
-    public function getContent() : ?string
+    public function getContent(): ?string
     {
         return $this->content;
     }
-    public function setLink(?string $link) : void
+    public function setLink(?string $link): void
     {
         $this->link = $link;
     }
-    public function getLink() : ?string
+    public function getLink(): ?string
     {
         return $this->link;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -39,7 +39,7 @@ class DatabaseText implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('link', $this->link);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

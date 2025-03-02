@@ -33,7 +33,7 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Description('')]
     protected ?string $icon = null;
     #[Description('')]
-    protected DatabaseId|PageId|null $parent = null;
+    protected mixed $parent = null;
     #[Key('in_trash')]
     #[Description('')]
     protected ?bool $inTrash = null;
@@ -47,111 +47,117 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     #[Key('public_url')]
     #[Description('')]
     protected ?string $publicUrl = null;
-    public function setObject(?string $object) : void
+    public function setObject(?string $object): void
     {
         $this->object = $object;
     }
-    public function getObject() : ?string
+    public function getObject(): ?string
     {
         return $this->object;
     }
-    public function setId(?string $id) : void
+    public function setId(?string $id): void
     {
         $this->id = $id;
     }
-    public function getId() : ?string
+    public function getId(): ?string
     {
         return $this->id;
     }
-    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime) : void
+    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
     {
         $this->createdTime = $createdTime;
     }
-    public function getCreatedTime() : ?\PSX\DateTime\LocalDateTime
+    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
     {
         return $this->createdTime;
     }
-    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime) : void
+    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
     {
         $this->lastEditedTime = $lastEditedTime;
     }
-    public function getLastEditedTime() : ?\PSX\DateTime\LocalDateTime
+    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
     {
         return $this->lastEditedTime;
     }
-    public function setCreatedBy(?User $createdBy) : void
+    public function setCreatedBy(?User $createdBy): void
     {
         $this->createdBy = $createdBy;
     }
-    public function getCreatedBy() : ?User
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
-    public function setLastEditedBy(?User $lastEditedBy) : void
+    public function setLastEditedBy(?User $lastEditedBy): void
     {
         $this->lastEditedBy = $lastEditedBy;
     }
-    public function getLastEditedBy() : ?User
+    public function getLastEditedBy(): ?User
     {
         return $this->lastEditedBy;
     }
-    public function setCover(?string $cover) : void
+    public function setCover(?string $cover): void
     {
         $this->cover = $cover;
     }
-    public function getCover() : ?string
+    public function getCover(): ?string
     {
         return $this->cover;
     }
-    public function setIcon(?string $icon) : void
+    public function setIcon(?string $icon): void
     {
         $this->icon = $icon;
     }
-    public function getIcon() : ?string
+    public function getIcon(): ?string
     {
         return $this->icon;
     }
-    public function setParent(DatabaseId|PageId|null $parent) : void
+    public function setParent(mixed $parent): void
     {
         $this->parent = $parent;
     }
-    public function getParent() : DatabaseId|PageId|null
+    public function getParent(): mixed
     {
         return $this->parent;
     }
-    public function setInTrash(?bool $inTrash) : void
+    public function setInTrash(?bool $inTrash): void
     {
         $this->inTrash = $inTrash;
     }
-    public function getInTrash() : ?bool
+    public function getInTrash(): ?bool
     {
         return $this->inTrash;
     }
-    public function setProperties(?\PSX\Record\Record $properties) : void
+    /**
+     * @param \PSX\Record\Record<mixed>|null $properties
+     */
+    public function setProperties(?\PSX\Record\Record $properties): void
     {
         $this->properties = $properties;
     }
-    public function getProperties() : ?\PSX\Record\Record
+    /**
+     * @return \PSX\Record\Record<mixed>|null
+     */
+    public function getProperties(): ?\PSX\Record\Record
     {
         return $this->properties;
     }
-    public function setUrl(?string $url) : void
+    public function setUrl(?string $url): void
     {
         $this->url = $url;
     }
-    public function getUrl() : ?string
+    public function getUrl(): ?string
     {
         return $this->url;
     }
-    public function setPublicUrl(?string $publicUrl) : void
+    public function setPublicUrl(?string $publicUrl): void
     {
         $this->publicUrl = $publicUrl;
     }
-    public function getPublicUrl() : ?string
+    public function getPublicUrl(): ?string
     {
         return $this->publicUrl;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -170,7 +176,7 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('public_url', $this->publicUrl);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

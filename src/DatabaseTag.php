@@ -19,6 +19,7 @@ class DatabaseTag extends TagAbstract
      *
      * @param string $databaseId
      * @return Database
+     * @throws ErrorException
      * @throws ClientException
      */
     public function get(string $databaseId): Database
@@ -39,7 +40,7 @@ class DatabaseTag extends TagAbstract
             $response = $this->httpClient->request('GET', $url, $options);
             $body = $response->getBody();
 
-            $data = $this->parser->parse((string) $body, Database::class);
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Database::class));
 
             return $data;
         } catch (ClientException $e) {
@@ -47,6 +48,12 @@ class DatabaseTag extends TagAbstract
         } catch (BadResponseException $e) {
             $body = $e->getResponse()->getBody();
             $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
 
             throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
         } catch (\Throwable $e) {

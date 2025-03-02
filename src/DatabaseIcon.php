@@ -15,23 +15,23 @@ class DatabaseIcon implements \JsonSerializable, \PSX\Record\RecordableInterface
     protected ?string $type = null;
     #[Description('')]
     protected ?string $emoji = null;
-    public function setType(?string $type) : void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
-    public function setEmoji(?string $emoji) : void
+    public function setEmoji(?string $emoji): void
     {
         $this->emoji = $emoji;
     }
-    public function getEmoji() : ?string
+    public function getEmoji(): ?string
     {
         return $this->emoji;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -39,7 +39,7 @@ class DatabaseIcon implements \JsonSerializable, \PSX\Record\RecordableInterface
         $record->put('emoji', $this->emoji);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }

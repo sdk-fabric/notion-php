@@ -15,23 +15,23 @@ class DatabaseCover implements \JsonSerializable, \PSX\Record\RecordableInterfac
     protected ?string $type = null;
     #[Description('')]
     protected mixed $external = null;
-    public function setType(?string $type) : void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }
-    public function getType() : ?string
+    public function getType(): ?string
     {
         return $this->type;
     }
-    public function setExternal(mixed $external) : void
+    public function setExternal(mixed $external): void
     {
         $this->external = $external;
     }
-    public function getExternal() : mixed
+    public function getExternal(): mixed
     {
         return $this->external;
     }
-    public function toRecord() : \PSX\Record\RecordInterface
+    public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
@@ -39,7 +39,7 @@ class DatabaseCover implements \JsonSerializable, \PSX\Record\RecordableInterfac
         $record->put('external', $this->external);
         return $record;
     }
-    public function jsonSerialize() : object
+    public function jsonSerialize(): object
     {
         return (object) $this->toRecord()->getAll();
     }
