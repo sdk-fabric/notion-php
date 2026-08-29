@@ -1,0 +1,11 @@
+{
+  "typehub_user": "sdkfabric",
+  "typehub_document": "notion",
+  "github_user": "sdk-fabric",
+  "github_repository": "notion-php",
+
+  "name": "sdkfabric/notion",
+  "description": "Notion PHP SDK managed by SDK Fabric",
+  "namespace": "SdkFabric\\Notion",
+  "website": "https://sdk-fabric.org"
+}
