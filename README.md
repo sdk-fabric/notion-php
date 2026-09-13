@@ -17,7 +17,7 @@ require __DIR__ . '/vendor/autoload.php';
 $client = new \SdkFabric\Notion\Client::build('[access_token]');
 
 // Returns a paginated list of Users for the workspace.
-$response = $client->user()->getall('Notion-Version', 'start_cursor', 1);
+$response = $client->user()->getAll('Notion-Version', 'start_cursor', 1);
 
 // Retrieves a User using the ID specified.
 $response = $client->user()->get('Notion-Version', 'user_id');
