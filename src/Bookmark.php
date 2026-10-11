@@ -8,15 +8,13 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Content of a bookmark block.')]
 class Bookmark implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     /**
      * @var array<RichText>|null
      */
-    #[Description('')]
     protected ?array $caption = null;
-    #[Description('')]
     protected ?string $url = null;
     /**
      * @param array<RichText>|null $caption
@@ -40,6 +38,9 @@ class Bookmark implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->url;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

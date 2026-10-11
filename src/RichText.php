@@ -10,30 +10,25 @@ use PSX\Schema\Attribute\DerivedType;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Discriminator;
 use PSX\Schema\Attribute\Key;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
+#[Description('Rich text object containing styled text, mentions or inline equations.')]
 #[Discriminator('type')]
 #[DerivedType(RichTextEquation::class, 'equation')]
+#[DerivedType(RichTextMention::class, 'mention')]
 #[DerivedType(RichTextText::class, 'text')]
 abstract class RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?string $type = null;
-    #[Description('')]
+    #[Description('Styling of the rich text.')]
     protected ?RichTextAnnotation $annotations = null;
-    #[Key('plain_text')]
-    #[Description('')]
-    protected ?string $plainText = null;
-    #[Description('')]
+    #[Description('A URL that the rich text links to or mentions.')]
+    #[Nullable(true)]
     protected ?string $href = null;
-    public function setType(?string $type): void
-    {
-        $this->type = $type;
-    }
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
+    #[Key('plain_text')]
+    #[Description('The plain text content, without any styling.')]
+    protected ?string $plainText = null;
+    #[Description('text, mention or equation.')]
+    protected ?string $type = null;
     public function setAnnotations(?RichTextAnnotation $annotations): void
     {
         $this->annotations = $annotations;
@@ -41,14 +36,6 @@ abstract class RichText implements \JsonSerializable, \PSX\Record\RecordableInte
     public function getAnnotations(): ?RichTextAnnotation
     {
         return $this->annotations;
-    }
-    public function setPlainText(?string $plainText): void
-    {
-        $this->plainText = $plainText;
-    }
-    public function getPlainText(): ?string
-    {
-        return $this->plainText;
     }
     public function setHref(?string $href): void
     {
@@ -58,14 +45,33 @@ abstract class RichText implements \JsonSerializable, \PSX\Record\RecordableInte
     {
         return $this->href;
     }
+    public function setPlainText(?string $plainText): void
+    {
+        $this->plainText = $plainText;
+    }
+    public function getPlainText(): ?string
+    {
+        return $this->plainText;
+    }
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
+    }
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('type', $this->type);
         $record->put('annotations', $this->annotations);
-        $record->put('plain_text', $this->plainText);
         $record->put('href', $this->href);
+        $record->put('plain_text', $this->plainText);
+        $record->put('type', $this->type);
         return $record;
     }
     public function jsonSerialize(): object

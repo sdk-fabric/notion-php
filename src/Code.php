@@ -9,22 +9,19 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Content of a code block.')]
 class Code implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     /**
      * @var array<RichText>|null
      */
-    #[Description('')]
     protected ?array $caption = null;
+    protected ?string $language = null;
     /**
      * @var array<RichText>|null
      */
     #[Key('rich_text')]
-    #[Description('')]
     protected ?array $richText = null;
-    #[Description('')]
-    protected ?string $language = null;
     /**
      * @param array<RichText>|null $caption
      */
@@ -38,6 +35,14 @@ class Code implements \JsonSerializable, \PSX\Record\RecordableInterface
     public function getCaption(): ?array
     {
         return $this->caption;
+    }
+    public function setLanguage(?string $language): void
+    {
+        $this->language = $language;
+    }
+    public function getLanguage(): ?string
+    {
+        return $this->language;
     }
     /**
      * @param array<RichText>|null $richText
@@ -53,21 +58,16 @@ class Code implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->richText;
     }
-    public function setLanguage(?string $language): void
-    {
-        $this->language = $language;
-    }
-    public function getLanguage(): ?string
-    {
-        return $this->language;
-    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
         $record->put('caption', $this->caption);
-        $record->put('rich_text', $this->richText);
         $record->put('language', $this->language);
+        $record->put('rich_text', $this->richText);
         return $record;
     }
     public function jsonSerialize(): object

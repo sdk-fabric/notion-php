@@ -8,21 +8,51 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
+#[Description('Paginated list of users.')]
 class UserCollection implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
+    #[Key('has_more')]
+    #[Description('Whether more results are available.')]
+    protected ?bool $hasMore = null;
+    #[Key('next_cursor')]
+    #[Description('Cursor for the next page of results.')]
+    #[Nullable(true)]
+    protected ?string $nextCursor = null;
+    #[Description('Always "list".')]
+    protected ?string $object = null;
     /**
      * @var array<User>|null
      */
-    #[Description('')]
+    #[Description('List of users.')]
     protected ?array $results = null;
-    #[Key('next_cursor')]
-    #[Description('')]
-    protected ?string $nextCursor = null;
-    #[Key('has_more')]
-    #[Description('')]
-    protected ?bool $hasMore = null;
+    #[Description('Always "user".')]
+    protected ?string $type = null;
+    public function setHasMore(?bool $hasMore): void
+    {
+        $this->hasMore = $hasMore;
+    }
+    public function getHasMore(): ?bool
+    {
+        return $this->hasMore;
+    }
+    public function setNextCursor(?string $nextCursor): void
+    {
+        $this->nextCursor = $nextCursor;
+    }
+    public function getNextCursor(): ?string
+    {
+        return $this->nextCursor;
+    }
+    public function setObject(?string $object): void
+    {
+        $this->object = $object;
+    }
+    public function getObject(): ?string
+    {
+        return $this->object;
+    }
     /**
      * @param array<User>|null $results
      */
@@ -37,29 +67,26 @@ class UserCollection implements \JsonSerializable, \PSX\Record\RecordableInterfa
     {
         return $this->results;
     }
-    public function setNextCursor(?string $nextCursor): void
+    public function setType(?string $type): void
     {
-        $this->nextCursor = $nextCursor;
+        $this->type = $type;
     }
-    public function getNextCursor(): ?string
+    public function getType(): ?string
     {
-        return $this->nextCursor;
+        return $this->type;
     }
-    public function setHasMore(?bool $hasMore): void
-    {
-        $this->hasMore = $hasMore;
-    }
-    public function getHasMore(): ?bool
-    {
-        return $this->hasMore;
-    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('results', $this->results);
-        $record->put('next_cursor', $this->nextCursor);
         $record->put('has_more', $this->hasMore);
+        $record->put('next_cursor', $this->nextCursor);
+        $record->put('object', $this->object);
+        $record->put('results', $this->results);
+        $record->put('type', $this->type);
         return $record;
     }
     public function jsonSerialize(): object

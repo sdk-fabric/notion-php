@@ -7,13 +7,15 @@
 namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
+#[Description('Text content of a rich text object of type text.')]
 class Text implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    #[Description('The actual text content (max 2000 characters).')]
     protected ?string $content = null;
-    #[Description('')]
+    #[Description('Inline link information, if included.')]
+    #[Nullable(true)]
     protected ?Link $link = null;
     public function setContent(?string $content): void
     {
@@ -31,6 +33,9 @@ class Text implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->link;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

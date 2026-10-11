@@ -9,44 +9,24 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
 class NumberedListItem implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
+    /**
+     * @var array<Block>|null
+     */
+    protected ?array $children = null;
+    protected ?string $color = null;
+    #[Key('list_format')]
+    #[Description('numbers, letters or roman.')]
+    protected ?string $listFormat = null;
+    #[Key('list_start_index')]
+    #[Description('Start number of the list.')]
+    protected ?int $listStartIndex = null;
     /**
      * @var array<RichText>|null
      */
     #[Key('rich_text')]
-    #[Description('')]
     protected ?array $richText = null;
-    #[Description('')]
-    protected ?string $color = null;
-    /**
-     * @var array<Block>|null
-     */
-    #[Description('')]
-    protected ?array $children = null;
-    /**
-     * @param array<RichText>|null $richText
-     */
-    public function setRichText(?array $richText): void
-    {
-        $this->richText = $richText;
-    }
-    /**
-     * @return array<RichText>|null
-     */
-    public function getRichText(): ?array
-    {
-        return $this->richText;
-    }
-    public function setColor(?string $color): void
-    {
-        $this->color = $color;
-    }
-    public function getColor(): ?string
-    {
-        return $this->color;
-    }
     /**
      * @param array<Block>|null $children
      */
@@ -61,13 +41,56 @@ class NumberedListItem implements \JsonSerializable, \PSX\Record\RecordableInter
     {
         return $this->children;
     }
+    public function setColor(?string $color): void
+    {
+        $this->color = $color;
+    }
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+    public function setListFormat(?string $listFormat): void
+    {
+        $this->listFormat = $listFormat;
+    }
+    public function getListFormat(): ?string
+    {
+        return $this->listFormat;
+    }
+    public function setListStartIndex(?int $listStartIndex): void
+    {
+        $this->listStartIndex = $listStartIndex;
+    }
+    public function getListStartIndex(): ?int
+    {
+        return $this->listStartIndex;
+    }
+    /**
+     * @param array<RichText>|null $richText
+     */
+    public function setRichText(?array $richText): void
+    {
+        $this->richText = $richText;
+    }
+    /**
+     * @return array<RichText>|null
+     */
+    public function getRichText(): ?array
+    {
+        return $this->richText;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('rich_text', $this->richText);
-        $record->put('color', $this->color);
         $record->put('children', $this->children);
+        $record->put('color', $this->color);
+        $record->put('list_format', $this->listFormat);
+        $record->put('list_start_index', $this->listStartIndex);
+        $record->put('rich_text', $this->richText);
         return $record;
     }
     public function jsonSerialize(): object

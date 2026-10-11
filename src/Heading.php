@@ -9,34 +9,17 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Content of a heading block.')]
 class Heading implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
+    protected ?string $color = null;
+    #[Key('is_toggleable')]
+    protected ?bool $isToggleable = null;
     /**
      * @var array<RichText>|null
      */
     #[Key('rich_text')]
-    #[Description('')]
     protected ?array $richText = null;
-    #[Description('')]
-    protected ?string $color = null;
-    #[Key('is_toggleable')]
-    #[Description('')]
-    protected ?bool $isToggleable = null;
-    /**
-     * @param array<RichText>|null $richText
-     */
-    public function setRichText(?array $richText): void
-    {
-        $this->richText = $richText;
-    }
-    /**
-     * @return array<RichText>|null
-     */
-    public function getRichText(): ?array
-    {
-        return $this->richText;
-    }
     public function setColor(?string $color): void
     {
         $this->color = $color;
@@ -53,13 +36,30 @@ class Heading implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->isToggleable;
     }
+    /**
+     * @param array<RichText>|null $richText
+     */
+    public function setRichText(?array $richText): void
+    {
+        $this->richText = $richText;
+    }
+    /**
+     * @return array<RichText>|null
+     */
+    public function getRichText(): ?array
+    {
+        return $this->richText;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('rich_text', $this->richText);
         $record->put('color', $this->color);
         $record->put('is_toggleable', $this->isToggleable);
+        $record->put('rich_text', $this->richText);
         return $record;
     }
     public function jsonSerialize(): object

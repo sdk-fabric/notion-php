@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Icon hosted at an external URL.')]
 class ExternalIcon extends Icon implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?ExternalObject $external = null;
     public function setExternal(?ExternalObject $external): void
     {
@@ -21,6 +20,9 @@ class ExternalIcon extends Icon implements \JsonSerializable, \PSX\Record\Record
     {
         return $this->external;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

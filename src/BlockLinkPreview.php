@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
-class BlockLinkPreview implements \JsonSerializable, \PSX\Record\RecordableInterface
+#[Description('Link preview block (read-only).')]
+class BlockLinkPreview extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('link_preview')]
-    #[Description('')]
     protected ?LinkPreview $linkPreview = null;
     public function setLinkPreview(?LinkPreview $linkPreview): void
     {
@@ -23,10 +22,13 @@ class BlockLinkPreview implements \JsonSerializable, \PSX\Record\RecordableInter
     {
         return $this->linkPreview;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
-        $record = new \PSX\Record\Record();
+        $record = parent::toRecord();
         $record->put('link_preview', $this->linkPreview);
         return $record;
     }

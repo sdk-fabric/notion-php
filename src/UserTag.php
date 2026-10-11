@@ -15,25 +15,72 @@ use Sdkgen\Client\TagAbstract;
 class UserTag extends TagAbstract
 {
     /**
-     * Returns a paginated list of Users for the workspace. The response may contain fewer than page_size of results.
+     * Retrieves a User using the ID specified.
      *
-     * @param string|null $startCursor
-     * @param int|null $pageSize
-     * @return UserCollection
+     * @param string $userId
+     * @return User
      * @throws ErrorException
      * @throws ClientException
      */
-    public function getAll(?string $startCursor = null, ?int $pageSize = null): UserCollection
+    public function get(string $userId): User
     {
-        $url = $this->parser->url('/v1/users', [
+        $url = $this->parser->url('/users/:user_id', [
+            'user_id' => $userId,
         ]);
 
         $options = [
             'headers' => [
             ],
             'query' => $this->parser->query([
-                'start_cursor' => $startCursor,
+            ], [
+            ]),
+        ];
+
+        try {
+            $response = $this->httpClient->request('GET', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(User::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Returns a paginated list of Users for the workspace. The response may contain fewer than page_size of results.
+     *
+     * @param int|null $pageSize
+     * @param string|null $startCursor
+     * @return UserCollection
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function getAll(?int $pageSize = null, ?string $startCursor = null): UserCollection
+    {
+        $url = $this->parser->url('/users', [
+        ]);
+
+        $options = [
+            'headers' => [
+            ],
+            'query' => $this->parser->query([
                 'page_size' => $pageSize,
+                'start_cursor' => $startCursor,
             ], [
             ]),
         ];
@@ -64,17 +111,15 @@ class UserTag extends TagAbstract
     }
 
     /**
-     * Retrieves a User using the ID specified.
+     * Retrieves the bot User associated with the API token provided in the authorization header.
      *
-     * @param string $userId
      * @return User
      * @throws ErrorException
      * @throws ClientException
      */
-    public function get(string $userId): User
+    public function getMe(): User
     {
-        $url = $this->parser->url('/v1/users/:user_id', [
-            'user_id' => $userId,
+        $url = $this->parser->url('/users/me', [
         ]);
 
         $options = [

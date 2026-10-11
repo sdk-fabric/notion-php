@@ -15,16 +15,67 @@ use Sdkgen\Client\TagAbstract;
 class PageTag extends TagAbstract
 {
     /**
-     * Retrieves a Page object using the ID specified.
+     * Creates a new page as a child of an existing page or data source.
      *
-     * @param string $pageId
+     * @param CreatePageRequest $payload
+     * @param string|null $filterProperties
      * @return Page
      * @throws ErrorException
      * @throws ClientException
      */
-    public function get(string $pageId): Page
+    public function create(CreatePageRequest $payload, ?string $filterProperties = null): Page
     {
-        $url = $this->parser->url('/v1/pages/:page_id', [
+        $url = $this->parser->url('/pages', [
+        ]);
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => $this->parser->query([
+                'filter_properties' => $filterProperties,
+            ], [
+            ]),
+            'json' => $payload,
+        ];
+
+        try {
+            $response = $this->httpClient->request('POST', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Page::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieves a Page object using the ID specified. To read page content, use Retrieve block children.
+     *
+     * @param string $pageId
+     * @param string|null $filterProperties
+     * @return Page
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function get(string $pageId, ?string $filterProperties = null): Page
+    {
+        $url = $this->parser->url('/pages/:page_id', [
             'page_id' => $pageId,
         ]);
 
@@ -32,6 +83,7 @@ class PageTag extends TagAbstract
             'headers' => [
             ],
             'query' => $this->parser->query([
+                'filter_properties' => $filterProperties,
             ], [
             ]),
         ];
@@ -62,16 +114,120 @@ class PageTag extends TagAbstract
     }
 
     /**
-     * Creates a new page that is a child of an existing page or database.
+     * Retrieves the content of a page rendered as enhanced markdown.
      *
-     * @param Page $payload
+     * @param string $pageId
+     * @param bool|null $includeTranscript
+     * @return PageMarkdown
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function getMarkdown(string $pageId, ?bool $includeTranscript = null): PageMarkdown
+    {
+        $url = $this->parser->url('/pages/:page_id/markdown', [
+            'page_id' => $pageId,
+        ]);
+
+        $options = [
+            'headers' => [
+            ],
+            'query' => $this->parser->query([
+                'include_transcript' => $includeTranscript,
+            ], [
+            ]),
+        ];
+
+        try {
+            $response = $this->httpClient->request('GET', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(PageMarkdown::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieves a page property item. Paginated for title, rich_text, relation, people and rollup properties.
+     *
+     * @param string $pageId
+     * @param string $propertyId
+     * @param int|null $pageSize
+     * @param string|null $startCursor
+     * @return PropertyItem
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function getProperty(string $pageId, string $propertyId, ?int $pageSize = null, ?string $startCursor = null): PropertyItem
+    {
+        $url = $this->parser->url('/pages/:page_id/properties/:property_id', [
+            'page_id' => $pageId,
+            'property_id' => $propertyId,
+        ]);
+
+        $options = [
+            'headers' => [
+            ],
+            'query' => $this->parser->query([
+                'page_size' => $pageSize,
+                'start_cursor' => $startCursor,
+            ], [
+            ]),
+        ];
+
+        try {
+            $response = $this->httpClient->request('GET', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(PropertyItem::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Moves an existing page to a new parent page or data source.
+     *
+     * @param string $pageId
+     * @param MovePageRequest $payload
      * @return Page
      * @throws ErrorException
      * @throws ClientException
      */
-    public function create(Page $payload): Page
+    public function move(string $pageId, MovePageRequest $payload): Page
     {
-        $url = $this->parser->url('/v1/pages', [
+        $url = $this->parser->url('/pages/:page_id/move', [
+            'page_id' => $pageId,
         ]);
 
         $options = [
@@ -89,6 +245,108 @@ class PageTag extends TagAbstract
             $body = $response->getBody();
 
             $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Page::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Updates page properties, icon, cover, lock state or trash status (in_trash).
+     *
+     * @param string $pageId
+     * @param UpdatePageRequest $payload
+     * @param string|null $filterProperties
+     * @return Page
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function update(string $pageId, UpdatePageRequest $payload, ?string $filterProperties = null): Page
+    {
+        $url = $this->parser->url('/pages/:page_id', [
+            'page_id' => $pageId,
+        ]);
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => $this->parser->query([
+                'filter_properties' => $filterProperties,
+            ], [
+            ]),
+            'json' => $payload,
+        ];
+
+        try {
+            $response = $this->httpClient->request('PATCH', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Page::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Updates or replaces content in a page using enhanced markdown.
+     *
+     * @param string $pageId
+     * @param UpdatePageMarkdownRequest $payload
+     * @return PageMarkdown
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function updateMarkdown(string $pageId, UpdatePageMarkdownRequest $payload): PageMarkdown
+    {
+        $url = $this->parser->url('/pages/:page_id/markdown', [
+            'page_id' => $pageId,
+        ]);
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => $this->parser->query([
+            ], [
+            ]),
+            'json' => $payload,
+        ];
+
+        try {
+            $response = $this->httpClient->request('PATCH', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(PageMarkdown::class));
 
             return $data;
         } catch (ClientException $e) {

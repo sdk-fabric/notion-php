@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Icon hosted by Notion.')]
 class FileIcon extends Icon implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?FileObject $file = null;
     public function setFile(?FileObject $file): void
     {
@@ -21,6 +20,9 @@ class FileIcon extends Icon implements \JsonSerializable, \PSX\Record\Recordable
     {
         return $this->file;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

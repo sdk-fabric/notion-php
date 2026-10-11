@@ -8,7 +8,31 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Divider block.')]
 class BlockDivider extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
+    #[Description('Always an empty object.')]
+    protected ?EmptyObject $divider = null;
+    public function setDivider(?EmptyObject $divider): void
+    {
+        $this->divider = $divider;
+    }
+    public function getDivider(): ?EmptyObject
+    {
+        return $this->divider;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
+    public function toRecord(): \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = parent::toRecord();
+        $record->put('divider', $this->divider);
+        return $record;
+    }
+    public function jsonSerialize(): object
+    {
+        return (object) $this->toRecord()->getAll();
+    }
 }

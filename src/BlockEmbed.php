@@ -8,7 +8,31 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Embed block.')]
 class BlockEmbed extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
+    #[Description('Embed block content.')]
+    protected ?Embed $embed = null;
+    public function setEmbed(?Embed $embed): void
+    {
+        $this->embed = $embed;
+    }
+    public function getEmbed(): ?Embed
+    {
+        return $this->embed;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
+    public function toRecord(): \PSX\Record\RecordInterface
+    {
+        /** @var \PSX\Record\Record<mixed> $record */
+        $record = parent::toRecord();
+        $record->put('embed', $this->embed);
+        return $record;
+    }
+    public function jsonSerialize(): object
+    {
+        return (object) $this->toRecord()->getAll();
+    }
 }

@@ -9,22 +9,12 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('A Notion-hosted file with a temporary URL.')]
 class FileObject implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?string $url = null;
     #[Key('expiry_time')]
-    #[Description('')]
     protected ?\PSX\DateTime\LocalDateTime $expiryTime = null;
-    public function setUrl(?string $url): void
-    {
-        $this->url = $url;
-    }
-    public function getUrl(): ?string
-    {
-        return $this->url;
-    }
+    protected ?string $url = null;
     public function setExpiryTime(?\PSX\DateTime\LocalDateTime $expiryTime): void
     {
         $this->expiryTime = $expiryTime;
@@ -33,12 +23,23 @@ class FileObject implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->expiryTime;
     }
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
+    }
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('url', $this->url);
         $record->put('expiry_time', $this->expiryTime);
+        $record->put('url', $this->url);
         return $record;
     }
     public function jsonSerialize(): object

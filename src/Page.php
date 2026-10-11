@@ -8,76 +8,58 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
-class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
+#[Description('The Page object contains the page property values of a single Notion page.')]
+class Page extends PageOrDataSource implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?string $object = null;
-    #[Description('')]
-    protected ?string $id = null;
-    #[Key('created_time')]
-    #[Description('')]
-    protected ?\PSX\DateTime\LocalDateTime $createdTime = null;
-    #[Key('last_edited_time')]
-    #[Description('')]
-    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
+    #[Description('Page cover image.')]
+    #[Nullable(true)]
+    protected ?Cover $cover = null;
     #[Key('created_by')]
-    #[Description('')]
+    #[Description('User who created the page.')]
     protected ?User $createdBy = null;
-    #[Key('last_edited_by')]
-    #[Description('')]
-    protected ?User $lastEditedBy = null;
-    #[Description('')]
-    protected ?FileObject $cover = null;
-    #[Description('')]
+    #[Key('created_time')]
+    #[Description('Date and time when this page was created.')]
+    protected ?\PSX\DateTime\LocalDateTime $createdTime = null;
+    #[Description('Page icon.')]
+    #[Nullable(true)]
     protected ?Icon $icon = null;
     #[Key('in_trash')]
-    #[Description('')]
+    #[Description('Whether the page is in trash.')]
     protected ?bool $inTrash = null;
-    /**
-     * @var \PSX\Record\Record<mixed>|null
-     */
-    #[Description('')]
-    protected ?\PSX\Record\Record $properties = null;
-    #[Description('')]
+    #[Key('is_archived')]
+    #[Description('Whether the page has been archived.')]
+    protected ?bool $isArchived = null;
+    #[Key('is_locked')]
+    #[Description('Whether the page is locked from editing in the Notion app UI.')]
+    protected ?bool $isLocked = null;
+    #[Key('last_edited_by')]
+    #[Description('User who last edited the page.')]
+    protected ?User $lastEditedBy = null;
+    #[Key('last_edited_time')]
+    #[Description('Date and time when this page was last edited.')]
+    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
+    #[Description('Information about the page\'s parent.')]
     protected ?ParentId $parent = null;
-    #[Description('')]
-    protected ?string $url = null;
+    /**
+     * @var \PSX\Record\Record<PagePropertyValue>|null
+     */
+    #[Description('Property values of this page.')]
+    protected ?\PSX\Record\Record $properties = null;
     #[Key('public_url')]
-    #[Description('')]
+    #[Description('The public URL of the page, if it has been published to the web.')]
+    #[Nullable(true)]
     protected ?string $publicUrl = null;
-    public function setObject(?string $object): void
+    #[Description('The URL of the Notion page.')]
+    protected ?string $url = null;
+    public function setCover(?Cover $cover): void
     {
-        $this->object = $object;
+        $this->cover = $cover;
     }
-    public function getObject(): ?string
+    public function getCover(): ?Cover
     {
-        return $this->object;
-    }
-    public function setId(?string $id): void
-    {
-        $this->id = $id;
-    }
-    public function getId(): ?string
-    {
-        return $this->id;
-    }
-    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
-    {
-        $this->createdTime = $createdTime;
-    }
-    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
-    {
-        return $this->createdTime;
-    }
-    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
-    {
-        $this->lastEditedTime = $lastEditedTime;
-    }
-    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
-    {
-        return $this->lastEditedTime;
+        return $this->cover;
     }
     public function setCreatedBy(?User $createdBy): void
     {
@@ -87,21 +69,13 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->createdBy;
     }
-    public function setLastEditedBy(?User $lastEditedBy): void
+    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
     {
-        $this->lastEditedBy = $lastEditedBy;
+        $this->createdTime = $createdTime;
     }
-    public function getLastEditedBy(): ?User
+    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
     {
-        return $this->lastEditedBy;
-    }
-    public function setCover(?FileObject $cover): void
-    {
-        $this->cover = $cover;
-    }
-    public function getCover(): ?FileObject
-    {
-        return $this->cover;
+        return $this->createdTime;
     }
     public function setIcon(?Icon $icon): void
     {
@@ -119,19 +93,37 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->inTrash;
     }
-    /**
-     * @param \PSX\Record\Record<mixed>|null $properties
-     */
-    public function setProperties(?\PSX\Record\Record $properties): void
+    public function setIsArchived(?bool $isArchived): void
     {
-        $this->properties = $properties;
+        $this->isArchived = $isArchived;
     }
-    /**
-     * @return \PSX\Record\Record<mixed>|null
-     */
-    public function getProperties(): ?\PSX\Record\Record
+    public function getIsArchived(): ?bool
     {
-        return $this->properties;
+        return $this->isArchived;
+    }
+    public function setIsLocked(?bool $isLocked): void
+    {
+        $this->isLocked = $isLocked;
+    }
+    public function getIsLocked(): ?bool
+    {
+        return $this->isLocked;
+    }
+    public function setLastEditedBy(?User $lastEditedBy): void
+    {
+        $this->lastEditedBy = $lastEditedBy;
+    }
+    public function getLastEditedBy(): ?User
+    {
+        return $this->lastEditedBy;
+    }
+    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
+    {
+        $this->lastEditedTime = $lastEditedTime;
+    }
+    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
+    {
+        return $this->lastEditedTime;
     }
     public function setParent(?ParentId $parent): void
     {
@@ -141,13 +133,19 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->parent;
     }
-    public function setUrl(?string $url): void
+    /**
+     * @param \PSX\Record\Record<PagePropertyValue>|null $properties
+     */
+    public function setProperties(?\PSX\Record\Record $properties): void
     {
-        $this->url = $url;
+        $this->properties = $properties;
     }
-    public function getUrl(): ?string
+    /**
+     * @return \PSX\Record\Record<PagePropertyValue>|null
+     */
+    public function getProperties(): ?\PSX\Record\Record
     {
-        return $this->url;
+        return $this->properties;
     }
     public function setPublicUrl(?string $publicUrl): void
     {
@@ -157,23 +155,34 @@ class Page implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->publicUrl;
     }
+    public function setUrl(?string $url): void
+    {
+        $this->url = $url;
+    }
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
-        $record = new \PSX\Record\Record();
-        $record->put('object', $this->object);
-        $record->put('id', $this->id);
-        $record->put('created_time', $this->createdTime);
-        $record->put('last_edited_time', $this->lastEditedTime);
-        $record->put('created_by', $this->createdBy);
-        $record->put('last_edited_by', $this->lastEditedBy);
+        $record = parent::toRecord();
         $record->put('cover', $this->cover);
+        $record->put('created_by', $this->createdBy);
+        $record->put('created_time', $this->createdTime);
         $record->put('icon', $this->icon);
         $record->put('in_trash', $this->inTrash);
-        $record->put('properties', $this->properties);
+        $record->put('is_archived', $this->isArchived);
+        $record->put('is_locked', $this->isLocked);
+        $record->put('last_edited_by', $this->lastEditedBy);
+        $record->put('last_edited_time', $this->lastEditedTime);
         $record->put('parent', $this->parent);
-        $record->put('url', $this->url);
+        $record->put('properties', $this->properties);
         $record->put('public_url', $this->publicUrl);
+        $record->put('url', $this->url);
         return $record;
     }
     public function jsonSerialize(): object

@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Rich text object of type text.')]
 class RichTextText extends RichText implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Text $text = null;
     public function setText(?Text $text): void
     {
@@ -21,6 +20,9 @@ class RichTextText extends RichText implements \JsonSerializable, \PSX\Record\Re
     {
         return $this->text;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

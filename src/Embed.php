@@ -8,11 +8,30 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Content of an embed block.')]
 class Embed implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    /**
+     * @var array<RichText>|null
+     */
+    #[Description('Caption of the embed.')]
+    protected ?array $caption = null;
+    #[Description('The URL of the embedded content.')]
     protected ?string $url = null;
+    /**
+     * @param array<RichText>|null $caption
+     */
+    public function setCaption(?array $caption): void
+    {
+        $this->caption = $caption;
+    }
+    /**
+     * @return array<RichText>|null
+     */
+    public function getCaption(): ?array
+    {
+        return $this->caption;
+    }
     public function setUrl(?string $url): void
     {
         $this->url = $url;
@@ -21,10 +40,14 @@ class Embed implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->url;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
+        $record->put('caption', $this->caption);
         $record->put('url', $this->url);
         return $record;
     }

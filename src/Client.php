@@ -17,9 +17,17 @@ use Sdkgen\Client\TokenStoreInterface;
 
 class Client extends ClientAbstract
 {
-    public function user(): UserTag
+    public function block(): BlockTag
     {
-        return new UserTag(
+        return new BlockTag(
+            $this->httpClient,
+            $this->parser
+        );
+    }
+
+    public function dataSource(): DataSourceTag
+    {
+        return new DataSourceTag(
             $this->httpClient,
             $this->parser
         );
@@ -41,15 +49,23 @@ class Client extends ClientAbstract
         );
     }
 
+    public function user(): UserTag
+    {
+        return new UserTag(
+            $this->httpClient,
+            $this->parser
+        );
+    }
+
 
 
     public static function build(string $token): self
     {
-        return new self('https://api.notion.com', new Credentials\HttpBearer($token));
+        return new self('https://api.notion.com/v1', new Credentials\HttpBearer($token));
     }
 
     public static function buildAnonymous(): self
     {
-        return new self('https://api.notion.com', new Credentials\Anonymous());
+        return new self('https://api.notion.com/v1', new Credentials\Anonymous());
     }
 }

@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('File block.')]
 class BlockFile extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?File $file = null;
     public function setFile(?File $file): void
     {
@@ -21,6 +20,9 @@ class BlockFile extends Block implements \JsonSerializable, \PSX\Record\Recordab
     {
         return $this->file;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

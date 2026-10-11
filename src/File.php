@@ -7,19 +7,27 @@
 namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('File object used by image, video, pdf, file and audio blocks, and by files property values.')]
 class File implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     /**
      * @var array<RichText>|null
      */
-    #[Description('')]
+    #[Description('Caption of the media block.')]
     protected ?array $caption = null;
-    #[Description('')]
+    #[Description('External file URL, when type is external.')]
+    protected ?ExternalObject $external = null;
+    #[Description('Notion-hosted file, when type is file.')]
     protected ?FileObject $file = null;
-    #[Description('')]
+    #[Key('file_upload')]
+    #[Description('Uploaded file, when type is file_upload.')]
+    protected ?IdReference $fileUpload = null;
+    #[Description('Name of the file (file blocks and files properties).')]
     protected ?string $name = null;
+    #[Description('file (Notion-hosted), external or file_upload (request only).')]
+    protected ?string $type = null;
     /**
      * @param array<RichText>|null $caption
      */
@@ -34,6 +42,14 @@ class File implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->caption;
     }
+    public function setExternal(?ExternalObject $external): void
+    {
+        $this->external = $external;
+    }
+    public function getExternal(): ?ExternalObject
+    {
+        return $this->external;
+    }
     public function setFile(?FileObject $file): void
     {
         $this->file = $file;
@@ -41,6 +57,14 @@ class File implements \JsonSerializable, \PSX\Record\RecordableInterface
     public function getFile(): ?FileObject
     {
         return $this->file;
+    }
+    public function setFileUpload(?IdReference $fileUpload): void
+    {
+        $this->fileUpload = $fileUpload;
+    }
+    public function getFileUpload(): ?IdReference
+    {
+        return $this->fileUpload;
     }
     public function setName(?string $name): void
     {
@@ -50,13 +74,27 @@ class File implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->name;
     }
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
+    }
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
         $record->put('caption', $this->caption);
+        $record->put('external', $this->external);
         $record->put('file', $this->file);
+        $record->put('file_upload', $this->fileUpload);
         $record->put('name', $this->name);
+        $record->put('type', $this->type);
         return $record;
     }
     public function jsonSerialize(): object

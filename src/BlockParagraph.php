@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Paragraph block.')]
 class BlockParagraph extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Paragraph $paragraph = null;
     public function setParagraph(?Paragraph $paragraph): void
     {
@@ -21,6 +20,9 @@ class BlockParagraph extends Block implements \JsonSerializable, \PSX\Record\Rec
     {
         return $this->paragraph;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Content of a child database block.')]
 class ChildDatabase implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?string $title = null;
     public function setTitle(?string $title): void
     {
@@ -21,6 +20,9 @@ class ChildDatabase implements \JsonSerializable, \PSX\Record\RecordableInterfac
     {
         return $this->title;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

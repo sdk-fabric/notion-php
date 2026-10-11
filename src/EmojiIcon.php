@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Emoji icon.')]
 class EmojiIcon extends Icon implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?string $emoji = null;
     public function setEmoji(?string $emoji): void
     {
@@ -21,6 +20,9 @@ class EmojiIcon extends Icon implements \JsonSerializable, \PSX\Record\Recordabl
     {
         return $this->emoji;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

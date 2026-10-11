@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Bulleted list item block.')]
 class BlockBulletedListItem extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('bulleted_list_item')]
-    #[Description('')]
     protected ?BulletedListItem $bulletedListItem = null;
     public function setBulletedListItem(?BulletedListItem $bulletedListItem): void
     {
@@ -23,6 +22,9 @@ class BlockBulletedListItem extends Block implements \JsonSerializable, \PSX\Rec
     {
         return $this->bulletedListItem;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

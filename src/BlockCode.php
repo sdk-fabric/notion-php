@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Code block.')]
 class BlockCode extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Code $code = null;
     public function setCode(?Code $code): void
     {
@@ -21,6 +20,9 @@ class BlockCode extends Block implements \JsonSerializable, \PSX\Record\Recordab
     {
         return $this->code;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Parent is a page.')]
 class PageParentId extends ParentId implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('page_id')]
-    #[Description('')]
     protected ?string $pageId = null;
     public function setPageId(?string $pageId): void
     {
@@ -23,6 +22,9 @@ class PageParentId extends ParentId implements \JsonSerializable, \PSX\Record\Re
     {
         return $this->pageId;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

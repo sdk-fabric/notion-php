@@ -9,24 +9,76 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('A comment on a Notion page or block.')]
 class Comment implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?ParentId $parent = null;
+    /**
+     * @var array<CommentAttachment>|null
+     */
+    #[Description('File attachments of the comment.')]
+    protected ?array $attachments = null;
+    #[Key('created_by')]
+    #[Description('The user who created the comment.')]
+    protected ?User $createdBy = null;
+    #[Key('created_time')]
+    #[Description('When the comment was created.')]
+    protected ?\PSX\DateTime\LocalDateTime $createdTime = null;
     #[Key('discussion_id')]
-    #[Description('')]
+    #[Description('The ID of the discussion thread this comment belongs to.')]
     protected ?string $discussionId = null;
+    #[Key('display_name')]
+    #[Description('The display name of the comment.')]
+    protected ?CommentDisplayName $displayName = null;
+    #[Key('has_pending_attachments')]
+    #[Description('Whether any file attachments are still uploading.')]
+    protected ?bool $hasPendingAttachments = null;
+    #[Description('The ID of the comment.')]
+    protected ?string $id = null;
+    #[Key('last_edited_time')]
+    #[Description('When the comment was last edited.')]
+    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
+    #[Description('Always `comment`.')]
+    protected ?string $object = null;
+    #[Key('original_content_deleted')]
+    #[Description('Whether this comment\'s original content was deleted.')]
+    protected ?bool $originalContentDeleted = null;
+    #[Description('The parent page or block of the comment.')]
+    protected ?ParentId $parent = null;
+    /**
+     * @var array<RichText>|null
+     */
     #[Key('rich_text')]
-    #[Description('')]
-    protected ?RichText $richText = null;
-    public function setParent(?ParentId $parent): void
+    #[Description('The rich text content of the comment.')]
+    protected ?array $richText = null;
+    /**
+     * @param array<CommentAttachment>|null $attachments
+     */
+    public function setAttachments(?array $attachments): void
     {
-        $this->parent = $parent;
+        $this->attachments = $attachments;
     }
-    public function getParent(): ?ParentId
+    /**
+     * @return array<CommentAttachment>|null
+     */
+    public function getAttachments(): ?array
     {
-        return $this->parent;
+        return $this->attachments;
+    }
+    public function setCreatedBy(?User $createdBy): void
+    {
+        $this->createdBy = $createdBy;
+    }
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+    public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
+    {
+        $this->createdTime = $createdTime;
+    }
+    public function getCreatedTime(): ?\PSX\DateTime\LocalDateTime
+    {
+        return $this->createdTime;
     }
     public function setDiscussionId(?string $discussionId): void
     {
@@ -36,20 +88,94 @@ class Comment implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->discussionId;
     }
-    public function setRichText(?RichText $richText): void
+    public function setDisplayName(?CommentDisplayName $displayName): void
+    {
+        $this->displayName = $displayName;
+    }
+    public function getDisplayName(): ?CommentDisplayName
+    {
+        return $this->displayName;
+    }
+    public function setHasPendingAttachments(?bool $hasPendingAttachments): void
+    {
+        $this->hasPendingAttachments = $hasPendingAttachments;
+    }
+    public function getHasPendingAttachments(): ?bool
+    {
+        return $this->hasPendingAttachments;
+    }
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+    public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
+    {
+        $this->lastEditedTime = $lastEditedTime;
+    }
+    public function getLastEditedTime(): ?\PSX\DateTime\LocalDateTime
+    {
+        return $this->lastEditedTime;
+    }
+    public function setObject(?string $object): void
+    {
+        $this->object = $object;
+    }
+    public function getObject(): ?string
+    {
+        return $this->object;
+    }
+    public function setOriginalContentDeleted(?bool $originalContentDeleted): void
+    {
+        $this->originalContentDeleted = $originalContentDeleted;
+    }
+    public function getOriginalContentDeleted(): ?bool
+    {
+        return $this->originalContentDeleted;
+    }
+    public function setParent(?ParentId $parent): void
+    {
+        $this->parent = $parent;
+    }
+    public function getParent(): ?ParentId
+    {
+        return $this->parent;
+    }
+    /**
+     * @param array<RichText>|null $richText
+     */
+    public function setRichText(?array $richText): void
     {
         $this->richText = $richText;
     }
-    public function getRichText(): ?RichText
+    /**
+     * @return array<RichText>|null
+     */
+    public function getRichText(): ?array
     {
         return $this->richText;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('parent', $this->parent);
+        $record->put('attachments', $this->attachments);
+        $record->put('created_by', $this->createdBy);
+        $record->put('created_time', $this->createdTime);
         $record->put('discussion_id', $this->discussionId);
+        $record->put('display_name', $this->displayName);
+        $record->put('has_pending_attachments', $this->hasPendingAttachments);
+        $record->put('id', $this->id);
+        $record->put('last_edited_time', $this->lastEditedTime);
+        $record->put('object', $this->object);
+        $record->put('original_content_deleted', $this->originalContentDeleted);
+        $record->put('parent', $this->parent);
         $record->put('rich_text', $this->richText);
         return $record;
     }

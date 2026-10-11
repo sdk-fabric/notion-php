@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Content of a link preview.')]
 class LinkPreview implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?string $url = null;
     public function setUrl(?string $url): void
     {
@@ -21,6 +20,9 @@ class LinkPreview implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->url;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

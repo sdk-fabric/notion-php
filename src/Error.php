@@ -7,14 +7,42 @@
 namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Error response returned by the Notion API for any non-2xx status.')]
 class Error implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    /**
+     * @var \PSX\Record\Record<mixed>|null
+     */
+    #[Key('additional_data')]
+    #[Description('Extra context, such as retry guidance or endpoint-specific details.')]
+    protected ?\PSX\Record\Record $additionalData = null;
+    #[Description('Error code, e.g. invalid_json, invalid_request_url, invalid_request, validation_error, missing_version, unauthorized, restricted_resource, object_not_found, conflict_error, rate_limited, internal_server_error, service_unavailable, gateway_timeout.')]
     protected ?string $code = null;
-    #[Description('')]
+    #[Description('Human-readable description of the error.')]
     protected ?string $message = null;
+    #[Description('Always "error".')]
+    protected ?string $object = null;
+    #[Key('request_id')]
+    #[Description('Unique ID of the request, useful when contacting Notion support.')]
+    protected ?string $requestId = null;
+    #[Description('HTTP status code of the error.')]
+    protected ?int $status = null;
+    /**
+     * @param \PSX\Record\Record<mixed>|null $additionalData
+     */
+    public function setAdditionalData(?\PSX\Record\Record $additionalData): void
+    {
+        $this->additionalData = $additionalData;
+    }
+    /**
+     * @return \PSX\Record\Record<mixed>|null
+     */
+    public function getAdditionalData(): ?\PSX\Record\Record
+    {
+        return $this->additionalData;
+    }
     public function setCode(?string $code): void
     {
         $this->code = $code;
@@ -31,12 +59,43 @@ class Error implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->message;
     }
+    public function setObject(?string $object): void
+    {
+        $this->object = $object;
+    }
+    public function getObject(): ?string
+    {
+        return $this->object;
+    }
+    public function setRequestId(?string $requestId): void
+    {
+        $this->requestId = $requestId;
+    }
+    public function getRequestId(): ?string
+    {
+        return $this->requestId;
+    }
+    public function setStatus(?int $status): void
+    {
+        $this->status = $status;
+    }
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
+        $record->put('additional_data', $this->additionalData);
         $record->put('code', $this->code);
         $record->put('message', $this->message);
+        $record->put('object', $this->object);
+        $record->put('request_id', $this->requestId);
+        $record->put('status', $this->status);
         return $record;
     }
     public function jsonSerialize(): object

@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Parent is a database.')]
 class DatabaseParentId extends ParentId implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('database_id')]
-    #[Description('')]
     protected ?string $databaseId = null;
     public function setDatabaseId(?string $databaseId): void
     {
@@ -23,6 +22,9 @@ class DatabaseParentId extends ParentId implements \JsonSerializable, \PSX\Recor
     {
         return $this->databaseId;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

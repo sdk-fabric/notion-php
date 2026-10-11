@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Child page block.')]
 class BlockChildPage extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('child_page')]
-    #[Description('')]
     protected ?ChildPage $childPage = null;
     public function setChildPage(?ChildPage $childPage): void
     {
@@ -23,6 +22,9 @@ class BlockChildPage extends Block implements \JsonSerializable, \PSX\Record\Rec
     {
         return $this->childPage;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

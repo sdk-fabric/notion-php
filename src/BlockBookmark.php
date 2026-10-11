@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Bookmark block.')]
 class BlockBookmark extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Bookmark $bookmark = null;
     public function setBookmark(?Bookmark $bookmark): void
     {
@@ -21,6 +20,9 @@ class BlockBookmark extends Block implements \JsonSerializable, \PSX\Record\Reco
     {
         return $this->bookmark;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

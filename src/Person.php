@@ -7,12 +7,16 @@
 namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
+use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Details about a person user.')]
 class Person implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    #[Description('The email of the person.')]
     protected ?string $email = null;
+    #[Key('email_verified')]
+    #[Description('Whether the person\'s email is verified.')]
+    protected ?bool $emailVerified = null;
     public function setEmail(?string $email): void
     {
         $this->email = $email;
@@ -21,11 +25,23 @@ class Person implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->email;
     }
+    public function setEmailVerified(?bool $emailVerified): void
+    {
+        $this->emailVerified = $emailVerified;
+    }
+    public function getEmailVerified(): ?bool
+    {
+        return $this->emailVerified;
+    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
         $record->put('email', $this->email);
+        $record->put('email_verified', $this->emailVerified);
         return $record;
     }
     public function jsonSerialize(): object

@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('A LaTeX equation expression.')]
 class Equation implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?string $expression = null;
     public function setExpression(?string $expression): void
     {
@@ -21,6 +20,9 @@ class Equation implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->expression;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

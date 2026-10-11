@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Parent is the workspace.')]
 class WorkspaceParentId extends ParentId implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?bool $workspace = null;
     public function setWorkspace(?bool $workspace): void
     {
@@ -21,6 +20,9 @@ class WorkspaceParentId extends ParentId implements \JsonSerializable, \PSX\Reco
     {
         return $this->workspace;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

@@ -8,19 +8,22 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('PDF block.')]
 class BlockPDF extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?PDF $pdf = null;
-    public function setPdf(?PDF $pdf): void
+    #[Description('PDF block content.')]
+    protected ?File $pdf = null;
+    public function setPdf(?File $pdf): void
     {
         $this->pdf = $pdf;
     }
-    public function getPdf(): ?PDF
+    public function getPdf(): ?File
     {
         return $this->pdf;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

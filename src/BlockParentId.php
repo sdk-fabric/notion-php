@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Parent is a block.')]
 class BlockParentId extends ParentId implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('block_id')]
-    #[Description('')]
     protected ?string $blockId = null;
     public function setBlockId(?string $blockId): void
     {
@@ -23,6 +22,9 @@ class BlockParentId extends ParentId implements \JsonSerializable, \PSX\Record\R
     {
         return $this->blockId;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

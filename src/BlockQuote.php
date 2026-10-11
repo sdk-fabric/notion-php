@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Quote block.')]
 class BlockQuote extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Quote $quote = null;
     public function setQuote(?Quote $quote): void
     {
@@ -21,6 +20,9 @@ class BlockQuote extends Block implements \JsonSerializable, \PSX\Record\Recorda
     {
         return $this->quote;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

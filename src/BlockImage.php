@@ -8,19 +8,22 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Image block.')]
 class BlockImage extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?FileObject $image = null;
-    public function setImage(?FileObject $image): void
+    #[Description('Image block content.')]
+    protected ?File $image = null;
+    public function setImage(?File $image): void
     {
         $this->image = $image;
     }
-    public function getImage(): ?FileObject
+    public function getImage(): ?File
     {
         return $this->image;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

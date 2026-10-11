@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Numbered list item block.')]
 class BlockNumberedListItem extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('numbered_list_item')]
-    #[Description('')]
     protected ?NumberedListItem $numberedListItem = null;
     public function setNumberedListItem(?NumberedListItem $numberedListItem): void
     {
@@ -23,6 +22,9 @@ class BlockNumberedListItem extends Block implements \JsonSerializable, \PSX\Rec
     {
         return $this->numberedListItem;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

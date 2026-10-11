@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Equation block.')]
 class BlockEquation extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Equation $equation = null;
     public function setEquation(?Equation $equation): void
     {
@@ -21,6 +20,9 @@ class BlockEquation extends Block implements \JsonSerializable, \PSX\Record\Reco
     {
         return $this->equation;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

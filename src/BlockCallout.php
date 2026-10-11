@@ -8,10 +8,9 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 
-#[Description('')]
+#[Description('Callout block.')]
 class BlockCallout extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
     protected ?Callout $callout = null;
     public function setCallout(?Callout $callout): void
     {
@@ -21,6 +20,9 @@ class BlockCallout extends Block implements \JsonSerializable, \PSX\Record\Recor
     {
         return $this->callout;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

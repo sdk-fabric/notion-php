@@ -9,11 +9,10 @@ namespace SdkFabric\Notion;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
 
-#[Description('')]
+#[Description('Child database block.')]
 class BlockChildDatabase extends Block implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
     #[Key('child_database')]
-    #[Description('')]
     protected ?ChildDatabase $childDatabase = null;
     public function setChildDatabase(?ChildDatabase $childDatabase): void
     {
@@ -23,6 +22,9 @@ class BlockChildDatabase extends Block implements \JsonSerializable, \PSX\Record
     {
         return $this->childDatabase;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

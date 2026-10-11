@@ -8,51 +8,71 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
+#[Description('A database: a container for one or more data sources.')]
 class Database implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?string $object = null;
-    #[Description('')]
-    protected ?string $id = null;
+    #[Description('The cover of the database.')]
+    #[Nullable(true)]
+    protected ?Cover $cover = null;
     #[Key('created_time')]
-    #[Description('')]
+    #[Description('When the database was created.')]
     protected ?\PSX\DateTime\LocalDateTime $createdTime = null;
-    #[Key('last_edited_time')]
-    #[Description('')]
-    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
-    #[Description('')]
-    protected ?DatabaseIcon $icon = null;
-    #[Description('')]
-    protected ?DatabaseCover $cover = null;
-    #[Description('')]
-    protected ?string $url = null;
     /**
-     * @var array<DatabaseTitle>|null
+     * @var array<DataSourceReference>|null
      */
-    #[Description('')]
-    protected ?array $title = null;
+    #[Key('data_sources')]
+    #[Description('The data sources of the database.')]
+    protected ?array $dataSources = null;
+    #[Key('database_type')]
+    #[Description('Typed database kind (`tasks`, `projects`, `sprints`, `docs`, `wiki`, `meetings`, `meeting_notes`, `skills`, `github_prs`), or null for a regular database.')]
+    #[Nullable(true)]
+    protected ?string $databaseType = null;
     /**
-     * @var array<DatabaseTitle>|null
+     * @var array<RichText>|null
      */
-    #[Description('')]
+    #[Description('The description of the database.')]
     protected ?array $description = null;
-    public function setObject(?string $object): void
+    #[Description('The icon of the database.')]
+    #[Nullable(true)]
+    protected ?Icon $icon = null;
+    #[Description('The ID of the database.')]
+    protected ?string $id = null;
+    #[Key('in_trash')]
+    #[Description('Whether the database is in the trash.')]
+    protected ?bool $inTrash = null;
+    #[Key('is_inline')]
+    #[Description('Whether the database is inline.')]
+    protected ?bool $isInline = null;
+    #[Key('is_locked')]
+    #[Description('Whether the database is locked from editing in the Notion app UI.')]
+    protected ?bool $isLocked = null;
+    #[Key('last_edited_time')]
+    #[Description('When the database was last edited.')]
+    protected ?\PSX\DateTime\LocalDateTime $lastEditedTime = null;
+    #[Description('Always `database`.')]
+    protected ?string $object = null;
+    #[Description('The parent of the database (page, block, workspace, or another database for wikis).')]
+    protected ?ParentId $parent = null;
+    #[Key('public_url')]
+    #[Description('The public URL of the database, if publicly accessible.')]
+    #[Nullable(true)]
+    protected ?string $publicUrl = null;
+    /**
+     * @var array<RichText>|null
+     */
+    #[Description('The title of the database.')]
+    protected ?array $title = null;
+    #[Description('The URL of the database.')]
+    protected ?string $url = null;
+    public function setCover(?Cover $cover): void
     {
-        $this->object = $object;
+        $this->cover = $cover;
     }
-    public function getObject(): ?string
+    public function getCover(): ?Cover
     {
-        return $this->object;
-    }
-    public function setId(?string $id): void
-    {
-        $this->id = $id;
-    }
-    public function getId(): ?string
-    {
-        return $this->id;
+        return $this->cover;
     }
     public function setCreatedTime(?\PSX\DateTime\LocalDateTime $createdTime): void
     {
@@ -62,6 +82,82 @@ class Database implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->createdTime;
     }
+    /**
+     * @param array<DataSourceReference>|null $dataSources
+     */
+    public function setDataSources(?array $dataSources): void
+    {
+        $this->dataSources = $dataSources;
+    }
+    /**
+     * @return array<DataSourceReference>|null
+     */
+    public function getDataSources(): ?array
+    {
+        return $this->dataSources;
+    }
+    public function setDatabaseType(?string $databaseType): void
+    {
+        $this->databaseType = $databaseType;
+    }
+    public function getDatabaseType(): ?string
+    {
+        return $this->databaseType;
+    }
+    /**
+     * @param array<RichText>|null $description
+     */
+    public function setDescription(?array $description): void
+    {
+        $this->description = $description;
+    }
+    /**
+     * @return array<RichText>|null
+     */
+    public function getDescription(): ?array
+    {
+        return $this->description;
+    }
+    public function setIcon(?Icon $icon): void
+    {
+        $this->icon = $icon;
+    }
+    public function getIcon(): ?Icon
+    {
+        return $this->icon;
+    }
+    public function setId(?string $id): void
+    {
+        $this->id = $id;
+    }
+    public function getId(): ?string
+    {
+        return $this->id;
+    }
+    public function setInTrash(?bool $inTrash): void
+    {
+        $this->inTrash = $inTrash;
+    }
+    public function getInTrash(): ?bool
+    {
+        return $this->inTrash;
+    }
+    public function setIsInline(?bool $isInline): void
+    {
+        $this->isInline = $isInline;
+    }
+    public function getIsInline(): ?bool
+    {
+        return $this->isInline;
+    }
+    public function setIsLocked(?bool $isLocked): void
+    {
+        $this->isLocked = $isLocked;
+    }
+    public function getIsLocked(): ?bool
+    {
+        return $this->isLocked;
+    }
     public function setLastEditedTime(?\PSX\DateTime\LocalDateTime $lastEditedTime): void
     {
         $this->lastEditedTime = $lastEditedTime;
@@ -70,21 +166,43 @@ class Database implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->lastEditedTime;
     }
-    public function setIcon(?DatabaseIcon $icon): void
+    public function setObject(?string $object): void
     {
-        $this->icon = $icon;
+        $this->object = $object;
     }
-    public function getIcon(): ?DatabaseIcon
+    public function getObject(): ?string
     {
-        return $this->icon;
+        return $this->object;
     }
-    public function setCover(?DatabaseCover $cover): void
+    public function setParent(?ParentId $parent): void
     {
-        $this->cover = $cover;
+        $this->parent = $parent;
     }
-    public function getCover(): ?DatabaseCover
+    public function getParent(): ?ParentId
     {
-        return $this->cover;
+        return $this->parent;
+    }
+    public function setPublicUrl(?string $publicUrl): void
+    {
+        $this->publicUrl = $publicUrl;
+    }
+    public function getPublicUrl(): ?string
+    {
+        return $this->publicUrl;
+    }
+    /**
+     * @param array<RichText>|null $title
+     */
+    public function setTitle(?array $title): void
+    {
+        $this->title = $title;
+    }
+    /**
+     * @return array<RichText>|null
+     */
+    public function getTitle(): ?array
+    {
+        return $this->title;
     }
     public function setUrl(?string $url): void
     {
@@ -95,46 +213,28 @@ class Database implements \JsonSerializable, \PSX\Record\RecordableInterface
         return $this->url;
     }
     /**
-     * @param array<DatabaseTitle>|null $title
+     * @return \PSX\Record\RecordInterface<mixed>
      */
-    public function setTitle(?array $title): void
-    {
-        $this->title = $title;
-    }
-    /**
-     * @return array<DatabaseTitle>|null
-     */
-    public function getTitle(): ?array
-    {
-        return $this->title;
-    }
-    /**
-     * @param array<DatabaseTitle>|null $description
-     */
-    public function setDescription(?array $description): void
-    {
-        $this->description = $description;
-    }
-    /**
-     * @return array<DatabaseTitle>|null
-     */
-    public function getDescription(): ?array
-    {
-        return $this->description;
-    }
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('object', $this->object);
-        $record->put('id', $this->id);
-        $record->put('created_time', $this->createdTime);
-        $record->put('last_edited_time', $this->lastEditedTime);
-        $record->put('icon', $this->icon);
         $record->put('cover', $this->cover);
-        $record->put('url', $this->url);
-        $record->put('title', $this->title);
+        $record->put('created_time', $this->createdTime);
+        $record->put('data_sources', $this->dataSources);
+        $record->put('database_type', $this->databaseType);
         $record->put('description', $this->description);
+        $record->put('icon', $this->icon);
+        $record->put('id', $this->id);
+        $record->put('in_trash', $this->inTrash);
+        $record->put('is_inline', $this->isInline);
+        $record->put('is_locked', $this->isLocked);
+        $record->put('last_edited_time', $this->lastEditedTime);
+        $record->put('object', $this->object);
+        $record->put('parent', $this->parent);
+        $record->put('public_url', $this->publicUrl);
+        $record->put('title', $this->title);
+        $record->put('url', $this->url);
         return $record;
     }
     public function jsonSerialize(): object

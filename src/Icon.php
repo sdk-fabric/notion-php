@@ -10,14 +10,17 @@ use PSX\Schema\Attribute\DerivedType;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Discriminator;
 
-#[Description('')]
+#[Description('Page, database or block icon.')]
 #[Discriminator('type')]
+#[DerivedType(CustomEmojiIcon::class, 'custom_emoji')]
 #[DerivedType(EmojiIcon::class, 'emoji')]
-#[DerivedType(FileIcon::class, 'file')]
 #[DerivedType(ExternalIcon::class, 'external')]
+#[DerivedType(FileIcon::class, 'file')]
+#[DerivedType(FileUploadIcon::class, 'file_upload')]
+#[DerivedType(NoticonIcon::class, 'icon')]
 abstract class Icon implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    #[Description('Type of icon: emoji, file, external, custom_emoji, icon or file_upload.')]
     protected ?string $type = null;
     public function setType(?string $type): void
     {
@@ -27,6 +30,9 @@ abstract class Icon implements \JsonSerializable, \PSX\Record\RecordableInterfac
     {
         return $this->type;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */

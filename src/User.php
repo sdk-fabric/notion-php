@@ -8,30 +8,43 @@ namespace SdkFabric\Notion;
 
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Key;
+use PSX\Schema\Attribute\Nullable;
 
-#[Description('')]
+#[Description('A user in a Notion workspace: a member, guest or bot (integration).')]
 class User implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
-    protected ?string $object = null;
-    #[Description('')]
-    protected ?string $id = null;
-    #[Description('')]
-    protected ?string $type = null;
-    #[Description('')]
-    protected ?Person $person = null;
-    #[Description('')]
-    protected ?string $name = null;
     #[Key('avatar_url')]
-    #[Description('')]
+    #[Description('The avatar URL of the user.')]
+    #[Nullable(true)]
     protected ?string $avatarUrl = null;
-    public function setObject(?string $object): void
+    #[Description('Details about the bot, when type is bot.')]
+    protected ?UserBot $bot = null;
+    #[Description('The ID of the user.')]
+    protected ?string $id = null;
+    #[Description('The name of the user.')]
+    #[Nullable(true)]
+    protected ?string $name = null;
+    #[Description('Always "user".')]
+    protected ?string $object = null;
+    #[Description('Details about the person, when type is person.')]
+    protected ?Person $person = null;
+    #[Description('person or bot.')]
+    protected ?string $type = null;
+    public function setAvatarUrl(?string $avatarUrl): void
     {
-        $this->object = $object;
+        $this->avatarUrl = $avatarUrl;
     }
-    public function getObject(): ?string
+    public function getAvatarUrl(): ?string
     {
-        return $this->object;
+        return $this->avatarUrl;
+    }
+    public function setBot(?UserBot $bot): void
+    {
+        $this->bot = $bot;
+    }
+    public function getBot(): ?UserBot
+    {
+        return $this->bot;
     }
     public function setId(?string $id): void
     {
@@ -41,13 +54,21 @@ class User implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->id;
     }
-    public function setType(?string $type): void
+    public function setName(?string $name): void
     {
-        $this->type = $type;
+        $this->name = $name;
     }
-    public function getType(): ?string
+    public function getName(): ?string
     {
-        return $this->type;
+        return $this->name;
+    }
+    public function setObject(?string $object): void
+    {
+        $this->object = $object;
+    }
+    public function getObject(): ?string
+    {
+        return $this->object;
     }
     public function setPerson(?Person $person): void
     {
@@ -57,32 +78,28 @@ class User implements \JsonSerializable, \PSX\Record\RecordableInterface
     {
         return $this->person;
     }
-    public function setName(?string $name): void
+    public function setType(?string $type): void
     {
-        $this->name = $name;
+        $this->type = $type;
     }
-    public function getName(): ?string
+    public function getType(): ?string
     {
-        return $this->name;
+        return $this->type;
     }
-    public function setAvatarUrl(?string $avatarUrl): void
-    {
-        $this->avatarUrl = $avatarUrl;
-    }
-    public function getAvatarUrl(): ?string
-    {
-        return $this->avatarUrl;
-    }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
         $record = new \PSX\Record\Record();
-        $record->put('object', $this->object);
-        $record->put('id', $this->id);
-        $record->put('type', $this->type);
-        $record->put('person', $this->person);
-        $record->put('name', $this->name);
         $record->put('avatar_url', $this->avatarUrl);
+        $record->put('bot', $this->bot);
+        $record->put('id', $this->id);
+        $record->put('name', $this->name);
+        $record->put('object', $this->object);
+        $record->put('person', $this->person);
+        $record->put('type', $this->type);
         return $record;
     }
     public function jsonSerialize(): object

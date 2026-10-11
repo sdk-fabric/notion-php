@@ -15,7 +15,55 @@ use Sdkgen\Client\TagAbstract;
 class DatabaseTag extends TagAbstract
 {
     /**
-     * Retrieves a database object — information that describes the structure and columns of a database — for a provided database ID. The response adheres to any limits to an integration’s capabilities.
+     * Creates a database and its initial data source as a child of a page or the workspace.
+     *
+     * @param CreateDatabaseRequest $payload
+     * @return Database
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function create(CreateDatabaseRequest $payload): Database
+    {
+        $url = $this->parser->url('/databases', [
+        ]);
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => $this->parser->query([
+            ], [
+            ]),
+            'json' => $payload,
+        ];
+
+        try {
+            $response = $this->httpClient->request('POST', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Database::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Retrieves a database object, a container for one or more data sources, for a provided database ID. Use Retrieve a data source to read its property schema.
      *
      * @param string $databaseId
      * @return Database
@@ -24,7 +72,7 @@ class DatabaseTag extends TagAbstract
      */
     public function get(string $databaseId): Database
     {
-        $url = $this->parser->url('/v1/databases/:database_id', [
+        $url = $this->parser->url('/databases/:database_id', [
             'database_id' => $databaseId,
         ]);
 
@@ -38,6 +86,56 @@ class DatabaseTag extends TagAbstract
 
         try {
             $response = $this->httpClient->request('GET', $url, $options);
+            $body = $response->getBody();
+
+            $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Database::class));
+
+            return $data;
+        } catch (ClientException $e) {
+            throw $e;
+        } catch (BadResponseException $e) {
+            $body = $e->getResponse()->getBody();
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            if ($statusCode >= 0 && $statusCode <= 999) {
+                $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Error::class));
+
+                throw new ErrorException($data);
+            }
+
+            throw new UnknownStatusCodeException('The server returned an unknown status code: ' . $statusCode);
+        } catch (\Throwable $e) {
+            throw new ClientException('An unknown error occurred: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Updates the attributes (title, description, icon, cover, parent, inline, trash and lock status) of a database.
+     *
+     * @param string $databaseId
+     * @param UpdateDatabaseRequest $payload
+     * @return Database
+     * @throws ErrorException
+     * @throws ClientException
+     */
+    public function update(string $databaseId, UpdateDatabaseRequest $payload): Database
+    {
+        $url = $this->parser->url('/databases/:database_id', [
+            'database_id' => $databaseId,
+        ]);
+
+        $options = [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => $this->parser->query([
+            ], [
+            ]),
+            'json' => $payload,
+        ];
+
+        try {
+            $response = $this->httpClient->request('PATCH', $url, $options);
             $body = $response->getBody();
 
             $data = $this->parser->parse((string) $body, \PSX\Schema\SchemaSource::fromClass(Database::class));

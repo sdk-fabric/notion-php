@@ -10,15 +10,17 @@ use PSX\Schema\Attribute\DerivedType;
 use PSX\Schema\Attribute\Description;
 use PSX\Schema\Attribute\Discriminator;
 
-#[Description('')]
+#[Description('Information about the parent of a page, block, database, data source or comment.')]
 #[Discriminator('type')]
+#[DerivedType(AgentParentId::class, 'agent_id')]
+#[DerivedType(BlockParentId::class, 'block_id')]
+#[DerivedType(DataSourceParentId::class, 'data_source_id')]
 #[DerivedType(DatabaseParentId::class, 'database_id')]
 #[DerivedType(PageParentId::class, 'page_id')]
-#[DerivedType(BlockParentId::class, 'block_id')]
 #[DerivedType(WorkspaceParentId::class, 'workspace')]
 abstract class ParentId implements \JsonSerializable, \PSX\Record\RecordableInterface
 {
-    #[Description('')]
+    #[Description('The parent type.')]
     protected ?string $type = null;
     public function setType(?string $type): void
     {
@@ -28,6 +30,9 @@ abstract class ParentId implements \JsonSerializable, \PSX\Record\RecordableInte
     {
         return $this->type;
     }
+    /**
+     * @return \PSX\Record\RecordInterface<mixed>
+     */
     public function toRecord(): \PSX\Record\RecordInterface
     {
         /** @var \PSX\Record\Record<mixed> $record */
